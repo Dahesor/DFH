@@ -4,6 +4,7 @@ scoreboard objectives add dhud.calculator dummy
 scoreboard objectives add dhud.HP dummy
 scoreboard objectives add dhud.Absorb dummy
 scoreboard objectives add dhud.hp_cache dummy
+scoreboard objectives add dhud.absorb_cache dummy
 scoreboard objectives add dhud.update dummy
 scoreboard objectives add dhud.saved_blink dummy
 scoreboard objectives add dhud.settings dummy
