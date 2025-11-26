@@ -1,7 +1,6 @@
-#execute if score @s health matches 41..60 run return run function dhud:stats/calcs/magic_def_hide
 
-data modify storage dah:actbar new set value {id:"ench.DEF",text:[{text:"qW,",font:"terra:hud",shadow_color:0},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"Qq."}]}
-execute if entity @s[tag=hud.absorb] run data modify storage dah:actbar new.text[0].font set value "terra:hud_above"
+data modify storage dah:actbar new set value {id:"ench.DEF",text:[{text:"qW,",font:"dhud:hud",shadow_color:0},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"Qq."}]}
+execute if entity @s[tag=hud.absorb] run data modify storage dah:actbar new.text[0].font set value "dhud:hud_above"
 
 
 execute if score #temp dhud.calculator matches 1 run return run data modify storage dah:actbar new.text[1].text set value "x"

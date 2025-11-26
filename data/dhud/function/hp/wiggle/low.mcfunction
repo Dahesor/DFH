@@ -4,7 +4,7 @@ scoreboard players operation #wiggle dhud.calculator %= #20 dhud.calculator
 
 #tellraw @a {score:{name:"#wiggle", objective:"dhud.calculator"}}
 
-data modify storage dah:actbar new.text[].font set value "terra:hud"
+data modify storage dah:actbar new.text[].font set value "dhud:hud"
 
 execute if score #wiggle dhud.calculator matches 0 run return run function dhud:hp/wiggle/pose/1
 execute if score #wiggle dhud.calculator matches 1 run return run function dhud:hp/wiggle/pose/2

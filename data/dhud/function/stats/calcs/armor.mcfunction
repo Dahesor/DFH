@@ -1,8 +1,8 @@
 execute if score #temp dhud.calculator matches 21.. run return run function dhud:stats/calcs/armor_20
 
-data modify storage dah:actbar new set value {id:"armor_20",text:[{text:"qW,",font:"terra:hud",shadow_color:0},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"Qq."}]}
+data modify storage dah:actbar new set value {id:"armor_20",text:[{text:"qW,",font:"dhud:hud",shadow_color:0},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"*"},{text:"m"},{text:"Qq."}]}
 
-execute if entity @s[tag=hud.absorb] run data modify storage dah:actbar new.text[0].font set value "terra:hud_above"
+execute if entity @s[tag=hud.absorb] run data modify storage dah:actbar new.text[0].font set value "dhud:hud_above"
 
 execute if score #temp dhud.calculator matches 1 run return run data modify storage dah:actbar new.text[1].text set value "N"
 execute if score #temp dhud.calculator matches 2.. run data modify storage dah:actbar new.text[1].text set value "B"

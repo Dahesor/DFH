@@ -3,7 +3,7 @@ execute if score %this_hp dhud.Absorb matches 41..60 run return run function dhu
 execute if score %this_hp dhud.Absorb matches 61.. run return run function dhud:hp/absorb/4
 
 
-data modify storage dah:actbar new set value {id:"absorb",text:[{text:"qW,",font:"terra:hud",shadow_color:0},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"Qq."}]}
+data modify storage dah:actbar new set value {id:"absorb",text:[{text:"qW,",font:"dhud:hud",shadow_color:0},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"*"},{text:"="},{text:"Qq."}]}
 execute if score %this_hp dhud.Absorb matches 1 run return run data modify storage dah:actbar new.text[1].text set value "$"
 execute if score %this_hp dhud.Absorb matches 2.. run data modify storage dah:actbar new.text[1].text set value "4"
 execute if score %this_hp dhud.Absorb matches 3 run return run data modify storage dah:actbar new.text[3].text set value "$"
