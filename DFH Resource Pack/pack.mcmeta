@@ -1,0 +1,7 @@
+{
+  "pack": {
+    "description": "Enable Fully Customizable\nPlayer HUD Display",
+        "min_format": 65,
+        "max_format": 77
+  }
+}

@@ -1,1 +1,0 @@
-execute store result score @s dhud.max_hp run attribute @s max_health get 100
