@@ -1,6 +1,8 @@
 # DFH - Dahesor's Fake HUD
 
-DFH is a library that **draws player's HUD** (Health bar and Armor bar) **with actionbar**, and has the option to use a scoreboard based **virtual health** system **while still listening to vanilla hp inputs** (mob attacks, fall damage, effect heals, etc.).
+[中文](/readme/ZH_CN.MD)
+
+DFH is a library that **draws player's HUD** (Health bar and Armor bar) **with actionbar**, and has the option to use a scoreboard based **virtual health** system **while still listening to vanilla hp inputs** (mob attacks, fall damage, effect heals, `/damage`, etc.).
 
 Thus, data pack is allowed to modify player health with scoreboard commands and make arbitrty changes to vanilla signals before they take effects.
 
@@ -42,11 +44,11 @@ See the [Virtual Health Section](#virtual-health-system) to learn what could cha
 
 #### Display
 
-Player's score on `dfh.armor` will be rendered as hp with a scale of 1. If it goes beyond 20 then a second layer of diamond colored armor icon will be rendered on top of the vanilla layer, up to a score of `40`.
+Player's score on `dfh.armor` will be rendered as armor points with a scale of 1. If it goes beyond 20 then a second layer of diamond colored armor icon will be rendered on top of the vanilla layer, up to a score of `40`.
 
 Player's score on `dfh.toughness` will be rendered as golden frames (Kind of like the Apple Skin mod) around the vanilla armor bar to represent Armor toughness, up to a score of `20`.
 
-This display **MAY NOT** re-draw automatically when there is a change in number. Run `function dfh:stats/armor` to refresh it when you change its value.
+This display **MAY NOT** re-draw automatically when there is a change in number. Run `function dfh:stats/armor` as the player to refresh it when you change its value.
 
 #### Driver
 
@@ -68,12 +70,14 @@ This display player's score on `dfh.ench_defence` as a third bar on top of armor
 
 ## Virtual Health System
 
-The Virtual Health System is the default driver for `dfh.HP` mentioned above. It is a scoreboard based **virtual health** system **while still listening to vanilla hp inputs**.
+The Virtual Health System is the default driver for `dfh.HP` and `dfh.Absorb` mentioned above. It is a scoreboard based **virtual health** system **while still listening to vanilla hp inputs**.
 
 This system is **on by default**. To turn it off, set score `virtual_health dfh.settings` -> `0`.
 
 > [!IMPORTANT]
 > **If you do not plan on using this system, please create the `dfh.settings` dummy scoreboard and set the settings before installing the datapack so you have less trouble reseting player's attributes.**
+>
+> If not, you would have to reset the player's `max_health` and `max_absorption` attributes since DFH changes them for this system.
 
 > [!CAUTION]
 > The `freeze` damage sound effect is muted since DFH needs a way to deal damage silently. If you need the freeze damage sound, consider re-implement it with your own logic.
@@ -82,7 +86,7 @@ You may directly changes a player's scores on the following scoreboards to manag
 
 * `dfh.HP`: Player's Current HP. Scale: 100 Default: 2000
 * `dfh.MAX_HP`: Player's Max HP. Sclae: 100 Default: 2000
-* `dfh.Absorb`: Player's Current Absoprtion Value Default: 0
+* `dfh.Absorb`: Player's Current Absoprtion Value. Scale: 100 Default: 0
 * `dfh.Regen`: Player's Natural Regeneration cooldown. Unit: 0.1 ticks Defaults: 800 (vanllina cd).
 
 > [!IMPORTANT]
@@ -113,11 +117,11 @@ Although player's HP is now scoreboard based, DFH retains the ability to listen 
 
 You may read or write the following scores on scoreboard `dfh.var`, when `#dfh:on_dmg` is called:
 * `$dmg`: **(Read & Write)** The damage about to take. **Scale: 100**. Changing this to negative may cause undefined behaviour.
-* `$by_entity`: **(Read Only)** If this is caused by a `entity_hurt_player` advancement trigger. Run `execute on attacker` to access the attacking entity.
+* `$by_entity`: **(Read Only)** If this is caused by a `entity_hurt_player` advancement trigger, then this value is 1, if not, it is 0. Run `execute on attacker` to access the attacking entity.
 
 **#dfh:on_heal**
 
-`function #dfh:on_dmg` will be called as the player whenever the player got healed
+`function #dfh:on_heal` will be called as the player whenever the player got healed
 
 Scores on scoreboard `dfh.var`:
 * `$heal`: **(Read & Write)** The amount about to heal. **Scale: 100**.
@@ -130,7 +134,7 @@ Scores on scoreboard `dfh.var`:
 
 Scores on scoreboard `dfh.var`:
 * `$regen_amount`: **(Read & Write)** The amount about to heal. **Scale: 100**. Defaults to 100.
-* `$reduce_hunger`: **(Read & Write)** If this is one, the player loses 1 Hunger or Saturation. Defaults to 1.
+* `$reduce_hunger`: **(Read & Write)** If this is `1`, then the player will lose 1 Hunger or Saturation. Defaults to 1.
 
 ### DFH Listeners
 
@@ -190,3 +194,23 @@ DFH Provides the following damage types:
  - **dfh:silent**: Damage bypasses cooldown, invulnerability, without sound, and has no knockback
  - **dfh:sys**: Damage bypasses cooldown, invulnerability, and has no knockback
  - **dfh:sys_with_knockback**: Damage bypasses cooldown and invulnerability.
+
+## Dependency File
+
+A DFH-dependency.zip is provided with the release. Put this file anywhere on your computer, then by creating a `spyglass.json` file at the root of your workspace, the Spyglass extension will provides you the completion and error checking of all the functions, storages, and tags you need to write to use this library.
+
+Example content of the `spyglass.json` file. See [Spyglass Documentation](https://spyglassmc.com/user/config.html) for more.
+```json
+{
+	"env": {
+		"dependencies": [
+			"file:///C:/path/to/DFH-dependency.zip",
+			"@vanilla-mcdoc",
+			"@vanilla-resourcepack",
+			"@vanilla-mcdoc"
+		],
+		"gameVersion": "1.21.11"
+	}
+}
+```
+Remeber to Reload Vs Code. If something about this somehow goes wrong, make Vs Code run the `Spyglass: Reset Project Cahce` command.

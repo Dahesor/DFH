@@ -1,4 +1,4 @@
-return 0
+return fail
 #Do not execute this function
 
 scoreboard objectives add dfh.var dummy

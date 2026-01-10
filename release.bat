@@ -3,7 +3,7 @@ setlocal EnableExtensions EnableDelayedExpansion
 
 REM 1) Ask for version
 set "ver="
-set /p ver=Enter version (e.g., v1.0 or 1.0): 
+set /p ver=Enter version (e.g., v1.0 or 1.0):
 if "%ver%"=="" (
   echo ERROR: Version cannot be empty.
   exit /b 1
@@ -15,6 +15,7 @@ if /I "!verNoV:~0,1!"=="v" set "verNoV=!verNoV:~1!"
 
 set "PACK1=DFH Datapack"
 set "PACK2=DFH Resources"
+set "PACK3=dependency"
 
 if not exist "%CD%\%PACK1%\" (
   echo ERROR: Folder not found: "%CD%\%PACK1%"
@@ -27,9 +28,11 @@ if not exist "%CD%\%PACK2%\" (
 
 set "ZIP1=%CD%\DFH Datapack v%verNoV%.zip"
 set "ZIP2=%CD%\DFH Resources v%verNoV%.zip"
+set "ZIP3=%CD%\DFH-dependency-v%verNoV%.zip"
 
 if exist "%ZIP1%" del /f /q "%ZIP1%" >nul 2>&1
 if exist "%ZIP2%" del /f /q "%ZIP2%" >nul 2>&1
+if exist "%ZIP3%" del /f /q "%ZIP3%" >nul 2>&1
 
 REM 2/3) Zip folder CONTENTS (not the folder itself), then normalize entry paths to "/"
 powershell -NoProfile -ExecutionPolicy Bypass ^
@@ -67,7 +70,8 @@ powershell -NoProfile -ExecutionPolicy Bypass ^
   "  Move-Item -LiteralPath $tmp -Destination $ZipPath -Force;" ^
   "}" ^
   "New-ZipWithForwardSlashes -SourceDir (Join-Path $PWD '%PACK1%') -ZipPath '%ZIP1%';" ^
-  "New-ZipWithForwardSlashes -SourceDir (Join-Path $PWD '%PACK2%') -ZipPath '%ZIP2%';"
+  "New-ZipWithForwardSlashes -SourceDir (Join-Path $PWD '%PACK2%') -ZipPath '%ZIP2%';" ^
+  "New-ZipWithForwardSlashes -SourceDir (Join-Path $PWD '%PACK3%') -ZipPath '%ZIP3%';"
 
 if errorlevel 1 (
   echo ERROR: Packaging failed.
@@ -78,4 +82,5 @@ echo.
 echo Done:
 echo   "%ZIP1%"
 echo   "%ZIP2%"
+echo   "%ZIP3%"
 exit /b 0
