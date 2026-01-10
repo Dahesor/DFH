@@ -1,0 +1,6 @@
+**/.DS_Store
+**/.VSCodeCounter/**
+copy.bat
+**/bs.dump/**
+**/.vscode/**
+**/__pycache__/**
