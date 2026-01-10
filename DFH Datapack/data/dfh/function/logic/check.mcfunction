@@ -2,6 +2,8 @@ execute if entity @s[tag=dfh.died] run return fail
 execute if entity @s[tag=dfh.__reseting_health] run function dfh:logic/monitor/__reset_hp
 execute if entity @s[tag=dfh.reset_hp] run function dfh:logic/monitor/reset_health
 
+execute if score @s dfh.HP > @s dfh.MAX_HP run scoreboard players operation @s dfh.HP = @s dfh.MAX_HP
+
 execute store result score $new dfh.monitor.Shield run data get entity @s AbsorptionAmount 100
 execute unless score $new dfh.monitor.Shield = @s dfh.monitor.Shield run function dfh:logic/damage/process
 

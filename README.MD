@@ -12,7 +12,7 @@ Thus, data pack is allowed to modify player health with scoreboard commands and 
 > To manage multiple text segments, the [Actionbar Mixer Library](https://github.com/Dahesor/Actionbar-Mixer-for-Minecraft) of version v1.3.2 or higher is required to use this library. 
 > Please [install Actionbar Mixer](https://github.com/Dahesor/Actionbar-Mixer-for-Minecraft/releases) first.
 
-Although this library uses actionbar to draw player HUD, powered by Actionbar Mixer you can still display any text with zero width along side DFH. See the documentation of Actionbar Mixer for details.
+Although DFH uses actionbar to draw player HUD, powered by Actionbar Mixer you can still display any text with zero width along side DFH. See the documentation of Actionbar Mixer for details.
 
 ## Custom HUD Display
 
@@ -36,7 +36,7 @@ Because different colors of hearts are already used for HP, the texture for abso
 
 #### Driver
 
-See the [Virtual Health Section](#virtual-health-system) to learn what could change player's scores on `dfh.HP` and `dfh.Absorb`. If Virtual Health system is off (`virtual_health dfh.settings` -> `0`) then library will only read these scores for hud rendering and will never change it (fully under your control).
+See the [Virtual Health Section](#virtual-health-system) to learn what could change player's scores on `dfh.HP` and `dfh.Absorb`. If Virtual Health system is off (`virtual_health dfh.settings` -> `0`) then DFH will only read these scores for hud rendering and will never change it (fully under your control).
 
 ### Armor Bar
 
@@ -50,9 +50,9 @@ This display **MAY NOT** re-draw automatically when there is a change in number.
 
 #### Driver
 
-If score `read_armor dfh.settings` is set to `1`, which is **on default**, then the library will automatically change the player's score on `dfh.armor` and `dfh.toughness` based on attributes when there is an equipment change.
+If score `read_armor dfh.settings` is set to `1`, which is **on default**, then the DFH will automatically change the player's score on `dfh.armor` and `dfh.toughness` based on attributes when there is an equipment change.
 
-When it does so, the armor bar is also refershed and no `function dfh:stats/armor` is needed. However if the player's attribute changed without an equipment change (for example, using the attribute command), then you must run `tag <Player> add dfh.update_armor` for library to update `<Player>`'s scores.
+When it does so, the armor bar is also refershed and no `function dfh:stats/armor` is needed. However if the player's attribute changed without an equipment change (for example, using the attribute command), then you must run `tag <Player> add dfh.update_armor` for DFH to update `<Player>`'s scores.
 
 ### Enchantment Protection Bar
 
@@ -64,7 +64,7 @@ This display player's score on `dfh.ench_defence` as a third bar on top of armor
 
 #### Driver
 
-`dfh.ench_defence` has **no driver on default**, so the library will not change its score. If set score `read_ench_defence dfh.settings` to `1`, then the library will automatically calculate the total protection levels and write to `dfh.ench_defence`, following the same refresh rule as the armor bar driver.
+`dfh.ench_defence` has **no driver on default**, so the DFH will not change its score. If set score `read_ench_defence dfh.settings` to `1`, then the DFH will automatically calculate the total protection levels and write to `dfh.ench_defence`, following the same refresh rule as the armor bar driver.
 
 ## Virtual Health System
 
@@ -75,6 +75,9 @@ This system is **on by default**. To turn it off, set score `virtual_health dfh.
 > [!IMPORTANT]
 > **If you do not plan on using this system, please create the `dfh.settings` dummy scoreboard and set the settings before installing the datapack so you have less trouble reseting player's attributes.**
 
+> [!CAUTION]
+> The `freeze` damage sound effect is muted since DFH needs a way to deal damage silently. If you need the freeze damage sound, consider re-implement it with your own logic.
+
 You may directly changes a player's scores on the following scoreboards to manage their health related logics:
 
 * `dfh.HP`: Player's Current HP. Scale: 100 Default: 2000
@@ -83,14 +86,103 @@ You may directly changes a player's scores on the following scoreboards to manag
 * `dfh.Regen`: Player's Natural Regeneration cooldown. Unit: 0.1 ticks Defaults: 800 (vanllina cd).
 
 > [!IMPORTANT]
-> Gamerule `natural_health_regeneration` is set to off since this logic is now managed by library.
+> DFH does not kill the player if their `dfh.HP` drops below 0. You have to write your own logic. A normal `kill` command does work with DFH.
 
-> [!WARNING]
-> To reduce player's hunger, a custom enchantment is used. The library will replace the player's saddle equipment slot with a temporary item with an enchantment to trigger the effect and remove the item, all done within one tick but not within function context. (If there is already an item, then apply enchantment to that item then remove it later).
+> [!IMPORTANT]
+> Absoprtion Effect no longer works directly with DFH. If a player receives an absoprtion effect, either from command or golden apple, `dfh.Absorb` will not change accrodingly.
+>
+> You should write your own logic to increase a player's score on `dfh.Absorb` on these events. `dfh.Absorb` will still tank damage for the player like vanilla.
+
+> [!IMPORTANT]
+> Gamerule `natural_health_regeneration` is set to `false` since this logic is now managed by DFH.
+
+> [!CAUTION]
+> To reduce player's hunger, a custom enchantment is used. DFH will replace the player's saddle equipment slot with a temporary item with an enchantment to trigger the effect and remove the item, all done within one tick but not within function context. (If there is already an item, then DFH will apply enchantment to that item then remove the enchantment later).
 >
 > The temporary item has `custom_data` of `{dfh:{temp:1b}}` and the enchantment is `{"dfh:exhustion":1}` in case you need to deal with this logic.
 >
-> When the library is operating player's inventory, the player will get tag `dfh.__inventory_changed` so your own `inventory_changed` advancement trigger could tell it is caused by this library.
+> When DFH is operating player's inventory, the player will get tag `dfh.__inventory_changed` so your own `inventory_changed` advancement trigger could tell it is caused by DFH.
 
+### Vanilla Signal Listeners
 
-When this system is enabled, you can directly change the player's Health by changing their score on `dfh.HP`
+Although player's HP is now scoreboard based, DFH retains the ability to listen to Vanilla Health changes. If the player gets hurt or gets healed by any Vanilla method, their `dfh.HP` or `dfh.Absorb` will still changes just like vanilla, and you can even intercept these signals and change them before they take effect.
+
+**#dfh:on_dmg**
+
+`function #dfh:on_dmg` will be called as the player whenever the player got hurt, (by an entity, by mob effects,by environmental damage, ect.)
+
+You may read or write the following scores on scoreboard `dfh.var`, when `#dfh:on_dmg` is called:
+* `$dmg`: **(Read & Write)** The damage about to take. **Scale: 100**. Changing this to negative may cause undefined behaviour.
+* `$by_entity`: **(Read Only)** If this is caused by a `entity_hurt_player` advancement trigger. Run `execute on attacker` to access the attacking entity.
+
+**#dfh:on_heal**
+
+`function #dfh:on_dmg` will be called as the player whenever the player got healed
+
+Scores on scoreboard `dfh.var`:
+* `$heal`: **(Read & Write)** The amount about to heal. **Scale: 100**.
+
+**#dfh:on_regen_tick** and **#dfh:on_regen_success**
+
+`function #dfh:on_regen_tick` will be called when there is a natural regeneration attempt (enough hunger and finished cooldown).
+
+`function #dfh:on_regen_success` will be called when there is a natural regeneration attempt and the player's `dfh.HP` is less than `dfh.MAX_HP` so a regeneration actually happens.
+
+Scores on scoreboard `dfh.var`:
+* `$regen_amount`: **(Read & Write)** The amount about to heal. **Scale: 100**. Defaults to 100.
+* `$reduce_hunger`: **(Read & Write)** If this is one, the player loses 1 Hunger or Saturation. Defaults to 1.
+
+### DFH Listeners
+
+The following function tags will be called by DFH on specific events:
+
+**#dfh:player_init**
+
+Called when a player is first being initialized by DFH.
+
+**#dfh:on_revive**
+
+Called when a player revives.
+
+**#dfh:on_hp_init_complete**
+
+> [!CAUTION]
+> When a player revives or joins the game for the first time, in the first 2 ticks the virtual health system is not useable for this player as DFH is setting up the player's HP.
+
+Called when a DFH finished setting up a player so that the virtual health system starts working on them.
+
+## DFH Functions
+
+DFH provides some additional functions:
+
+**dfh:redraw**
+
+Immediately erase and redraw the entire hud for this player.
+
+**dfh:stats/armor**
+
+Immediately erase and redraw the armor bar for this player.
+
+**dfh:kill**
+
+Kill this Player with death message `❌ <Player Name>`
+
+**dfh:fake_dmg**
+
+Gives the player a 0.001 damage with no knockback. If you changed the player's score and wants to shake the player's screen then use this.
+
+**dfh:uninstall**
+
+Uninstall the library. You should remove or disable the datapack before the next reload or DFH will load again.
+
+> [!CAUTION]
+> DFH's Virtual Health System changes the player's actual `max_health` and `max_absorption` attributs and it is impossible for an uninstall function to reset these for offline players
+>
+> Thus, DFH does not do this and you should be in charge of setting these 2 attributes back to normal.
+
+## DFH Damage Types
+
+DFH Provides the following damage types:
+ - **dfh:silent**: Damage bypasses cooldown, invulnerability, without sound, and has no knockback
+ - **dfh:sys**: Damage bypasses cooldown, invulnerability, and has no knockback
+ - **dfh:sys_with_knockback**: Damage bypasses cooldown and invulnerability.

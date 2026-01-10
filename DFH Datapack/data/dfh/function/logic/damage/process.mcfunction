@@ -12,6 +12,7 @@ execute if score @s dfh.Absorb matches ..0 run scoreboard players set @s dfh.Abs
 execute if score $dmg dfh.var matches ..0 run scoreboard players set $dmg dfh.var 0
 
 scoreboard players operation @s dfh.HP -= $dmg dfh.var
+execute if score @s dfh.HP matches ..0 run scoreboard players set @s dfh.HP 0
 
 scoreboard players set $by_entity dfh.var 0
 
