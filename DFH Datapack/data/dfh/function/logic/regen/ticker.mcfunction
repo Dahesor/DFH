@@ -9,7 +9,6 @@ function dfh:logic/regen/cases
 
 execute if entity @s[tag=dfh.hunger.hungry] run return fail
 execute unless score @s dfh.HP < @s dfh.MAX_HP run return fail
-execute if score @s region matches 6 run return fail
 
 scoreboard players add @s dfh.HP 100
 execute if score @s dfh.HP > @s dfh.MAX_HP run scoreboard players operation @s dfh.HP = @s dfh.MAX_HP
