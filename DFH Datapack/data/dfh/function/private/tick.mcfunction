@@ -1,5 +1,3 @@
-execute unless score #dependency dfh.calculator matches 3.. run return fail
-
 execute as @a[gamemode=!spectator] at @s run function dfh:player/main
 execute store result score $gametime dfh.calculator run time query gametime
 

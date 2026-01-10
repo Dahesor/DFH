@@ -1,5 +1,3 @@
-execute unless score #dependency dfh.calculator matches 3.. run return run advancement revoke @s only dfh:init
-
 scoreboard players set @s dfh.Regen 800
 attribute @s max_absorption base set 1024
 attribute @s max_health base set 1024

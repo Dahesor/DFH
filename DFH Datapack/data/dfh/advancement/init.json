@@ -5,6 +5,6 @@
         }
     },
     "rewards": {
-        "function": "dfh:player/initial_stats"
+        "function": "dfh:player/init_recieve"
     }
 }
