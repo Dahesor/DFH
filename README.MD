@@ -86,7 +86,10 @@ You may directly changes a player's scores on the following scoreboards to manag
 > Gamerule `natural_health_regeneration` is set to off since this logic is now managed by library.
 
 > [!WARNING]
-> To reduce player's hunger, a custom enchantment is used. The library will replace the player's saddle equipment slot with a temporary item with an enchantment to trigger the effect and remove the item, all done within one tick but not within function context. (If there is already an item, then apply enchantment to that item then remove it later). The temporary item has `custom_data` of `{dfh:{temp:1b}}` and the enchantment is `{"dfh:exhustion":1}` in case you need to deal with this logic.
+> To reduce player's hunger, a custom enchantment is used. The library will replace the player's saddle equipment slot with a temporary item with an enchantment to trigger the effect and remove the item, all done within one tick but not within function context. (If there is already an item, then apply enchantment to that item then remove it later).
+>
+> The temporary item has `custom_data` of `{dfh:{temp:1b}}` and the enchantment is `{"dfh:exhustion":1}` in case you need to deal with this logic.
+>
 > When the library is operating player's inventory, the player will get tag `dfh.__inventory_changed` so your own `inventory_changed` advancement trigger could tell it is caused by this library.
 
 
