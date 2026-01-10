@@ -9,7 +9,7 @@ Thus, data pack is allowed to modify player health with scoreboard commands and 
 ## Dependency
 
 > [!IMPORTANT]
-> To manage multiple text segments, the [Actionbar Mixer Library](https://github.com/Dahesor/Actionbar-Mixer-for-Minecraft) of version v1.3.2 or higher is required to use this library. 
+> To manage multiple text segments, the [Actionbar Mixer Library](https://github.com/Dahesor/Actionbar-Mixer-for-Minecraft) of version v1.3.2 or higher is required to use this library.
 > Please [install Actionbar Mixer](https://github.com/Dahesor/Actionbar-Mixer-for-Minecraft/releases) first.
 
 Although DFH uses actionbar to draw player HUD, powered by Actionbar Mixer you can still display any text with zero width along side DFH. See the documentation of Actionbar Mixer for details.
@@ -170,6 +170,10 @@ Kill this Player with death message `❌ <Player Name>`
 **dfh:fake_dmg**
 
 Gives the player a 0.001 damage with no knockback. If you changed the player's score and wants to shake the player's screen then use this.
+
+**dfh:return**
+
+Returns the numric version of DFH (>0).
 
 **dfh:uninstall**
 

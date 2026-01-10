@@ -1,0 +1,3 @@
+dispatch mcdoc:custom_data["dfh"] to struct{
+    temp?: boolean
+}

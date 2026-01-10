@@ -1,4 +1,5 @@
 scoreboard players set #init dfh.settings 1
+scoreboard players set #version dfh.settings 1
 
 # Using fake health
 scoreboard players set virtual_health dfh.settings 1

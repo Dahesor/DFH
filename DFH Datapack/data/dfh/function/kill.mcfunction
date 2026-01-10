@@ -1,1 +1,1 @@
-damage @s 999999999 dfh:silent
+#Kill this Player with death message `❌ <Player Name>`
