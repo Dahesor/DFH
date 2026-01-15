@@ -34,7 +34,7 @@ If the player is under poison or wither effect, then the top layer will become t
 
 Player's score on `dfh.Absorb` will be rendered as absorption values with a scale of 100. It can also render up to 4 layers for a max score of 8000 (80 points or 40 hearts).
 
-Because different colors of hearts are already used for HP, the texture for absorption values have been changed to shileds.
+Because different colors of hearts are already used for HP, the texture for absorption values have been changed to shields.
 
 #### Driver
 
