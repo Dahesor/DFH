@@ -113,7 +113,12 @@
 
 你可以在`#dfh:on_dmg`函数中读写以下分数在`dfh.var`记分板上的数值:
 * `$dmg`: **(读写)** 该玩家将要受到的伤害。**倍率: 100**。请勿调整为负数。
-* `$by_entity`: **(只读)** 若本次伤害由`entity_hurt_player`进度触发器触发，则为1 advancement trigger. Run `execute on attacker` to access the attacking entity。可以执行`execute on attacker`获取这个实体。
+
+同时，本次伤害的伤害类型会被存储于storage `dfh:var`的`type`键名下。这个ID默认包含默认命名空间 (类似 `minecraft:fall`).
+
+> [!IMPORTANTE]
+> 伤害类型检测默认仅适用于原版已有的伤害类型。
+> 如果你想要使大废物能够检测你添加的自定义伤害类型，请见[自定义伤害类型判断](#自定义伤害类型判断)部分。
 
 **#dfh:on_heal**
 
@@ -131,6 +136,54 @@
 `dfh.var`上的分数:
 * `$regen_amount`: **(读写)** 该玩家将要受到的治疗量。**倍率: 100**。默认为100。
 * `$reduce_hunger`: **(读写)** 若为1，则玩家将会失去一点饥饿值或饱和度。默认为1。
+
+
+#### 自定义伤害类型判断
+
+默认情况下，大废物只会检查一次伤害是否属于任意原版伤害类型。如果你添加了新的伤害类型并用它造成伤害，那么在触发`#dfh:on_dmg`时，大废物提供的伤害类型将会是`dfh:unknown`。
+
+想要大废物检测你的自定义伤害类型，你需要：
+1. 将你的伤害类型添加入伤害类型标签`dfh:sys/all`
+2. 创建一个进度触发器:
+```json
+{
+    "criteria": {
+        "hurt": {
+            "trigger": "entity_hurt_player",
+            "conditions": {
+                "damage": {
+                    "type": {
+                        "tags": [{"expected": true,"id": "伤害类型标签"}]
+                    }
+                }
+            }
+        }
+    },
+    "rewards": {
+        "function": "执行函数"
+    },
+    "parent": "dfh:root"
+}
+```
+触发器的`parent`应该是`dfh:root`。其他条件不限，但一般来说，应该把`伤害类型标签`换成一个包含伤害类型的标签。触发时执行的函数`执行函数`的内容应该是:
+```mcfunction
+function dfh:dmg_recieve {type:"ID"}
+```
+`ID`可以是任意字符串。当你的进度触发时，本次伤害（如果有的话）的`#dfh:on_dmg`提供的伤害类型就会是你填入的`ID`。
+
+这个函数不需要撤回进度。
+
+##### 覆盖原版伤害类型触发器
+
+如果你需要自定义的`entity_hurt_player`进度触发器以定义自定义的`ID`，那么你可以禁用大废物在特定原版伤害类型上的默认触发器，然后定义你自己的。
+
+想要禁用大废物对于一个原版伤害类型的默认触发器，设置分数`<伤害类型ID>`在计分板`dfh.disabled_trigger`上的分数为`1`。`<伤害类型ID>`应该包含默认命名空间。
+
+比如，执行`scoreboard players set minecraft:fall dfh.disabled_trigger 1`会禁用大废物对`fall`伤害类型的默认触发器。
+
+现在，你可以向上面[自定义伤害类型判断](#自定义伤害类型判断)部分一样，为`fall`伤害类型创建自定义的进度触发器。例如，你可以创建两个进度，根据不同条件将`fall`伤害类型分为两种情况，分别执行`function dfh:dmg_recieve {type:"normal_fall"}`或`function dfh:dmg_recieve {type:"special_fall"}`。那么现在当它们触发时，`#dfh:on_dmg`函数就会提供的伤害类型就会是`normal_fall`或`special_fall`。
+
+如果一次伤害没能触发任何进度，那么提供的伤害类型将为`dfh:unknown`。
 
 ### 大废物监视器
 

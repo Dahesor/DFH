@@ -117,7 +117,12 @@ Although player's HP is now scoreboard based, DFH retains the ability to listen 
 
 You may read or write the following scores on scoreboard `dfh.var`, when `#dfh:on_dmg` is called:
 * `$dmg`: **(Read & Write)** The damage about to take. **Scale: 100**. Changing this to negative may cause undefined behaviour.
-* `$by_entity`: **(Read Only)** If this is caused by a `entity_hurt_player` advancement trigger, then this value is 1, if not, it is 0. Run `execute on attacker` to access the attacking entity.
+
+Additionally, the damage type causing this hurt will be stored in storage `dfh:var` under key `type`. Default namespace is included by default. (e.g. `minecraft:fall`)
+
+> [!IMPORTANTE]
+> This damage type check only works for damage types exists in vanilla or DFH library. If a custom damage type is used the value in `type` will be `dfh:unknown`.
+> However, you can add your own damage type to the checking list, see [Custom Damage Types](#custom-damage-types-identifying) Section
 
 **#dfh:on_heal**
 
@@ -135,6 +140,54 @@ Scores on scoreboard `dfh.var`:
 Scores on scoreboard `dfh.var`:
 * `$regen_amount`: **(Read & Write)** The amount about to heal. **Scale: 100**. Defaults to 100.
 * `$reduce_hunger`: **(Read & Write)** If this is `1`, then the player will lose 1 Hunger or Saturation. Defaults to 1.
+
+#### Custom Damage Types Identifying
+
+On defualt, DFH only checks if a damage is one of the vanilla damage types. If it is a custom damage type created by you, then on the `#dfh:on_dmg` function call, the damage type information will be `dfh:unknown`.
+
+To have it detect your own damage type, you need to:
+
+1. Add your damage type to damage type tag `dfh:sys/all`.
+2. Create an advancemnt like this:
+```json
+{
+    "criteria": {
+        "hurt": {
+            "trigger": "entity_hurt_player",
+            "conditions": {
+                "damage": {
+                    "type": {
+                        "tags": [{"expected": true,"id": "damage tag"}]
+                    }
+                }
+            }
+        }
+    },
+    "rewards": {
+        "function": "Your Function"
+    },
+    "parent": "dfh:root"
+}
+```
+Make sure its `parent` is set to `dfh:root`. You can have additional conditions if you want, generally you Replace `damage tag` with a damage tag that contains your desired damage type. When triggers, execute `Your Function` which runs:
+```mcfunction
+function dfh:dmg_recieve {type:"ID"}
+```
+`ID` can be any string. Whenever this advancement triggers, on the `#dfh:on_dmg` call, `ID` will be provided by DFH as the damage type.
+
+You do not have to revoke the advancemnt on trigger.
+
+##### Overriding Vanilla Damage Type Triggers
+
+If you need a custom `entity_hurt_player` advancement trigger to detect a sepcific event (for example, player took damage from a mob with a sepcific tag), you can disable DFH's sepcific `entity_hurt_player` trigger and use your own.
+
+To stop DFH's trigger to work on a vanilla damage type, simply set score `<damage type id>` on scoreboard `dfh.disabled_trigger` to `1`. `<damage type id>` should include default name space.
+
+For example, running `scoreboard players set minecraft:fall dfh.disabled_trigger 1` will stop DFH's trigger for `fall` damage from working.
+
+Now if a player takes fall damage, in a `#dfh:on_dmg` call, the damage type will become `dfh:unknown`. However, you can create a custom advancement just like above to handle `fall` damage type. For example, you can create 2 advancement to split `fall` into 2 cases, running `function dfh:dmg_recieve {type:"normal_fall"}` and `function dfh:dmg_recieve {type:"special_fall"}`, and now when they triggers, `#dfh:on_dmg` will provided the damage type to be `normal_fall` or `special_fall`.
+
+An uncaught case will result in `type` to become `dfh:unknown`.
 
 ### DFH Listeners
 
@@ -174,6 +227,8 @@ Kill this Player with death message `❌ <Player Name>`
 **dfh:fake_dmg**
 
 Gives the player a 0.001 damage with no knockback. If you changed the player's score and wants to shake the player's screen then use this.
+
+This will not send a damage event to `#dfh:on_dmg`.
 
 **dfh:return**
 

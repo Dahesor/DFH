@@ -2,7 +2,7 @@ scoreboard players operation $dmg dfh.var = @s dfh.monitor.Shield
 scoreboard players operation $dmg dfh.var -= $new dfh.monitor.Shield
 scoreboard players operation @s dfh.monitor.Shield = $new dfh.monitor.Shield
 
-execute if score #has_type dfh.calculator matches 0 run data modify storage dfh:var type set value "dfh:unknown"
+execute unless score #has_type dfh.calculator matches 1 run data modify storage dfh:var type set value "dfh:unknown"
 scoreboard players set #has_type dfh.calculator 0
 
 execute if score $dmg dfh.var matches ..0 run return 1
