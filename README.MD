@@ -120,7 +120,7 @@ You may read or write the following scores on scoreboard `dfh.var`, when `#dfh:o
 
 Additionally, the damage type causing this hurt will be stored in storage `dfh:var` under key `type`. Default namespace is included by default. (e.g. `minecraft:fall`)
 
-> [!IMPORTANTE]
+> [!IMPORTANT]
 > This damage type check only works for damage types exists in vanilla or DFH library. If a custom damage type is used the value in `type` will be `dfh:unknown`.
 > However, you can add your own damage type to the checking list, see [Custom Damage Types](#custom-damage-types-identifying) Section
 
