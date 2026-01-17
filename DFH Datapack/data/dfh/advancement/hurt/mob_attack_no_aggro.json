@@ -1,0 +1,42 @@
+{
+    "criteria": {
+        "hurt": {
+            "trigger": "entity_hurt_player",
+            "conditions": {
+                "damage": {
+                    "type": {
+                        "tags": [
+                            {
+                                "expected": true,
+                                "id": "dfh:mob_attack_no_aggro"
+                            }
+                        ]
+                    }
+                },
+                "player": [
+                    {
+                        "condition": "inverted",
+                        "term": {
+                            "condition": "value_check",
+                            "range": {
+                                "min": 1
+                            },
+                            "value": {
+                                "type": "score",
+                                "target": {
+                                    "type": "fixed",
+                                    "name": "minecraft:mob_attack_no_aggro"
+                                },
+                                "score": "dfh.disabled_trigger"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "rewards": {
+        "function": "dfh:logic/types/mob_attack_no_aggro"
+    },
+    "parent": "dfh:root"
+}

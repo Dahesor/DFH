@@ -1,0 +1,42 @@
+{
+    "criteria": {
+        "hurt": {
+            "trigger": "entity_hurt_player",
+            "conditions": {
+                "damage": {
+                    "type": {
+                        "tags": [
+                            {
+                                "expected": true,
+                                "id": "dfh:player_explosion"
+                            }
+                        ]
+                    }
+                },
+                "player": [
+                    {
+                        "condition": "inverted",
+                        "term": {
+                            "condition": "value_check",
+                            "range": {
+                                "min": 1
+                            },
+                            "value": {
+                                "type": "score",
+                                "target": {
+                                    "type": "fixed",
+                                    "name": "minecraft:player_explosion"
+                                },
+                                "score": "dfh.disabled_trigger"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "rewards": {
+        "function": "dfh:logic/types/player_explosion"
+    },
+    "parent": "dfh:root"
+}

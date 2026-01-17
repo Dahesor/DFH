@@ -1,0 +1,3 @@
+dispatch minecraft:storage["dfh:var"] to struct{
+    type?: #[id="damage_type"] string
+}

@@ -1,7 +1,11 @@
 scoreboard players operation $dmg dfh.var = @s dfh.monitor.Shield
 scoreboard players operation $dmg dfh.var -= $new dfh.monitor.Shield
 scoreboard players operation @s dfh.monitor.Shield = $new dfh.monitor.Shield
-execute if score $dmg dfh.var matches ..0 run return run scoreboard players set $by_entity dfh.var 0
+
+execute if score #has_type dfh.calculator matches 0 run data modify storage dfh:var type set value "dfh:unknown"
+scoreboard players set #has_type dfh.calculator 0
+
+execute if score $dmg dfh.var matches ..0 run return 1
 
 function #dfh:on_dmg
 
@@ -13,8 +17,6 @@ execute if score $dmg dfh.var matches ..0 run scoreboard players set $dmg dfh.va
 
 scoreboard players operation @s dfh.HP -= $dmg dfh.var
 execute if score @s dfh.HP matches ..0 run scoreboard players set @s dfh.HP 0
-
-scoreboard players set $by_entity dfh.var 0
 
 execute if score @s dfh.monitor.HP matches 30000.. run return run function dfh:logic/monitor/remove_200
 function dfh:logic/monitor/reset_shield

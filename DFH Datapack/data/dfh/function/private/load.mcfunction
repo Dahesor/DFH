@@ -5,6 +5,7 @@ scoreboard objectives add dfh.HP dummy
 scoreboard objectives add dfh.Absorb dummy
 scoreboard objectives add dfh.MAX_HP dummy
 scoreboard objectives add dfh.Regen dummy
+scoreboard objectives add dfh.disabled_trigger dummy
 scoreboard objectives add dfh.absorb_cache dummy
 scoreboard objectives add dfh.hp_cache dummy
 scoreboard objectives add dfh.update dummy

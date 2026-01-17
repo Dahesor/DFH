@@ -1,0 +1,42 @@
+{
+    "criteria": {
+        "hurt": {
+            "trigger": "entity_hurt_player",
+            "conditions": {
+                "damage": {
+                    "type": {
+                        "tags": [
+                            {
+                                "expected": true,
+                                "id": "dfh:bad_respawn_point"
+                            }
+                        ]
+                    }
+                },
+                "player": [
+                    {
+                        "condition": "inverted",
+                        "term": {
+                            "condition": "value_check",
+                            "range": {
+                                "min": 1
+                            },
+                            "value": {
+                                "type": "score",
+                                "target": {
+                                    "type": "fixed",
+                                    "name": "minecraft:bad_respawn_point"
+                                },
+                                "score": "dfh.disabled_trigger"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "rewards": {
+        "function": "dfh:logic/types/bad_respawn_point"
+    },
+    "parent": "dfh:root"
+}
