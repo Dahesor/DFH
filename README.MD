@@ -179,6 +179,9 @@ You do not have to revoke the advancemnt on trigger.
 
 ##### Overriding Vanilla Damage Type Triggers
 
+<details>
+<summary>How to make a custom entity_hurt_player trigger</summary>
+
 If you need a custom `entity_hurt_player` advancement trigger to detect a sepcific event (for example, player took damage from a mob with a sepcific tag), you can disable DFH's sepcific `entity_hurt_player` trigger and use your own.
 
 To stop DFH's trigger to work on a vanilla damage type, simply set score `<damage type id>` on scoreboard `dfh.disabled_trigger` to `1`. `<damage type id>` should include default name space.
@@ -188,6 +191,7 @@ For example, running `scoreboard players set minecraft:fall dfh.disabled_trigger
 Now if a player takes fall damage, in a `#dfh:on_dmg` call, the damage type will become `dfh:unknown`. However, you can create a custom advancement just like above to handle `fall` damage type. For example, you can create 2 advancement to split `fall` into 2 cases, running `function dfh:dmg_recieve {type:"normal_fall"}` and `function dfh:dmg_recieve {type:"special_fall"}`, and now when they triggers, `#dfh:on_dmg` will provided the damage type to be `normal_fall` or `special_fall`.
 
 An uncaught case will result in `type` to become `dfh:unknown`.
+</details>
 
 ### DFH Listeners
 

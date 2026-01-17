@@ -175,6 +175,9 @@ function dfh:dmg_recieve {type:"ID"}
 
 ##### 覆盖原版伤害类型触发器
 
+<details>
+<summary>如何做自定义的entity_hurt_player进度触发判断</summary>
+
 如果你需要自定义的`entity_hurt_player`进度触发器以定义自定义的`ID`，那么你可以禁用大废物在特定原版伤害类型上的默认触发器，然后定义你自己的。
 
 想要禁用大废物对于一个原版伤害类型的默认触发器，设置分数`<伤害类型ID>`在计分板`dfh.disabled_trigger`上的分数为`1`。`<伤害类型ID>`应该包含默认命名空间。
@@ -184,6 +187,8 @@ function dfh:dmg_recieve {type:"ID"}
 现在，你可以向上面[自定义伤害类型判断](#自定义伤害类型判断)部分一样，为`fall`伤害类型创建自定义的进度触发器。例如，你可以创建两个进度，根据不同条件将`fall`伤害类型分为两种情况，分别执行`function dfh:dmg_recieve {type:"normal_fall"}`或`function dfh:dmg_recieve {type:"special_fall"}`。那么现在当它们触发时，`#dfh:on_dmg`函数就会提供的伤害类型就会是`normal_fall`或`special_fall`。
 
 如果一次伤害没能触发任何进度，那么提供的伤害类型将为`dfh:unknown`。
+
+</details>
 
 ### 大废物监视器
 
