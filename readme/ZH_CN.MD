@@ -176,7 +176,7 @@ function dfh:dmg_recieve {type:"ID"}
 ##### 覆盖原版伤害类型触发器
 
 <details>
-<summary>如何做自定义的entity_hurt_player进度触发判断</summary>
+<summary>如何做自定义的entity_hurt_player进度触发判断【点击展开】</summary>
 
 如果你需要自定义的`entity_hurt_player`进度触发器以定义自定义的`ID`，那么你可以禁用大废物在特定原版伤害类型上的默认触发器，然后定义你自己的。
 

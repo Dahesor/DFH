@@ -180,7 +180,7 @@ You do not have to revoke the advancemnt on trigger.
 ##### Overriding Vanilla Damage Type Triggers
 
 <details>
-<summary>How to make a custom entity_hurt_player trigger (**Click to Expand**)</summary>
+<summary>How to make a custom entity_hurt_player trigger 【Click to Expand】</summary>
 
 If you need a custom `entity_hurt_player` advancement trigger to detect a sepcific event (for example, player took damage from a mob with a sepcific tag), you can disable DFH's sepcific `entity_hurt_player` trigger and use your own.
 
